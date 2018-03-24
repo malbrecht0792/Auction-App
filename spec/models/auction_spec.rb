@@ -1,14 +1,35 @@
 require 'rails_helper'
 
 RSpec.describe Auction, type: :model do
+  subject { described_class.new }
+
   it "is valid with valid attributes" do
-    expect(Auction.new).to be_valid
+    subject.title = 'Anything'
+    subject.description = 'Anything'
+    subject.start_date = DateTime.now
+    subject.end_date = DateTime.now + 1.week
+    expect(subject).to be_valid
   end
+
   it "is not valid without a title" do
-    auction = Auction.new(title: nil)
-    expect(auction).not_to be_valid
+    expect(subject).not_to be_valid
   end
-  it "is not valid without a description"
-  it "is not valid without a start_date"
-  it "is not valid without a end_date"
+
+  it "is not valid without a description" do
+    subject.title = 'Anything'
+    expect(subject).not_to be_valid
+  end
+
+  it "is not valid without a start_date" do
+    subject.title = "Anything"
+    subject.description = "Lorem ipsum dolor sit amet"
+    expect(subject).to_not be_valid
+  end
+  
+  it "is not valid without a end_date" do
+    subject.title = "Anything"
+    subject.description = "Lorem ipsum dolor sit amet"
+    subject.start_date = DateTime.now
+    expect(subject).to_not be_valid
+  end
 end
