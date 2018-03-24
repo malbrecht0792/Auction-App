@@ -1,14 +1,42 @@
 require 'rails_helper'
 
-RSpec.describe Auction, type: :model do
-  it "is valid with valid attributes" do
-    expect(Auction.new).to be_valid
+RSpec.describe Auction, :type => :model do
+  let(:seller) { User.new(:email => "jane@doe.com", :password => "pw1234")}
+  subject {
+    described_class.new(title: "Anything", description: "Lorem ipsum",
+                      start_date: DateTime.now, end_date: DateTime.now + 1.week,
+                      seller: seller)
+  }
+
+  describe 'Validations' do
+    it "is valid with valid attributes" do
+      expect(subject).to be_valid
+    end
+
+    it "is not valid without a title" do
+      subject.title = nil
+      expect(subject).to_not be_valid
+    end
+
+    it "is not valid without a description" do
+      subject.description = nil
+      expect(subject).to_not be_valid
+    end
+
+    it "is not valid without a start_date" do
+      subject.start_date = nil
+      expect(subject).to_not be_valid
+    end
+
+    it "is not valid without a end_date" do
+      subject.end_date = nil
+      expect(subject).to_not be_valid
+    end
   end
-  it "is not valid without a title" do
-    auction = Auction.new(title: nil)
-    expect(auction).not_to be_valid
+
+  describe "Associations" do
+    it { should belong_to(:buyer) }
+    it { should belong_to(:seller) }
+    it { should have_many(:bids) }
   end
-  it "is not valid without a description"
-  it "is not valid without a start_date"
-  it "is not valid without a end_date"
 end
