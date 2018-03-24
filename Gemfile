@@ -39,6 +39,7 @@ gem 'rspec-rails'
 gem 'capybara'
 gem 'factory_bot_rails'
 gem 'rails-controller-testing'
+gem 'shoulda'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
